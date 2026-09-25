@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050707">
+<meta name="description" content="Rick and Morty — arquivo multiversal XayDEv. Um fan site interativo sobre dimensões, personagens, episódios e o caos do multiverso.">
+<title>Rick and Morty | XayDEv</title>
+
+<style>
+:root{
+  --bg:#030605;
+  --bg2:#07100b;
+  --card:rgba(8,17,12,.78);
+  --card2:rgba(4,10,7,.91);
+  --green:#b6ff3f;
+  --lime:#6dff57;
+  --acid:#d7ff62;
+  --portal:#39ff98;
+  --blue:#53b9ff;
+  --purple:#a273ff;
+  --pink:#ff62db;
+  --yellow:#fff06a;
+  --red:#ff667e;
+  --text:#edfce9;
+  --muted:#8ca298;
+  --soft:#bdd0c1;
+  --line:rgba(145,255,110,.16);
+  --shadow:0 0 45px rgba(72,255,117,.10),0 0 100px rgba(83,185,255,.05);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  color:var(--text);
+  background:
+    radial-gradient(circle at 73% 5%,rgba(70,255,117,.09),transparent 22%),
+    radial-gradient(circle at 8% 25%,rgba(84,185,255,.08),transparent 23%),
+    radial-gradient(circle at 80% 67%,rgba(162,115,255,.06),transparent 20%),
+    linear-gradient(180deg,#020403 0%,#071009 45%,#020403 100%);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-4;
+  opacity:.20;
+  background-image:
+    linear-gradient(rgba(126,255,99,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(126,255,99,.05) 1px,transparent 1px);
+  background-size:36px 36px;
+  animation:gridMove 18s linear infinite;
+  mask-image:linear-gradient(to bottom,#000,transparent 92%);
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:40;
+  pointer-events:none;
+  opacity:.055;
+  background:repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(255,255,255,.12) 3px
+  );
+}
+@keyframes gridMove{to{background-position:36px 36px}}
+
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+
+#cosmos{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  pointer-events:none;
+  overflow:hidden;
+}
+.dot{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(203,255,192,.85);
+  box-shadow:0 0 9px rgba(126,255,99,.65);
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  0%{transform:translate3d(0,108vh,0);opacity:0}
+  10%{opacity:.9}
+  90%{opacity:.55}
+  100%{transform:translate3d(70px,-12vh,0);opacity:0}
+}
+
+.topbar{
+  position:fixed;
+  top:14px;left:14px;right:14px;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:11px 14px;
+  border:1px solid rgba(142,255,113,.19);
+  border-radius:16px;
+  background:rgba(2,8,4,.66);
+  backdrop-filter:blur(18px);
+  box-shadow:0 10px 38px rgba(0,0,0,.22),0 0 22px rgba(86,255,110,.05);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font:800 13px "Courier New",monospace;
+  letter-spacing:2px;
+}
+.brand-icon{
+  width:28px;height:28px;border:1px solid rgba(126,255,99,.32);
+  border-radius:50%;position:relative;
+  background:radial-gradient(circle,#d7ff62 0 12%,#55ff67 15%,#0f2817 49%,transparent 50%);
+  box-shadow:0 0 20px rgba(90,255,100,.14);
+}
+.brand-icon::after{
+  content:"";position:absolute;inset:5px;border:1px dashed rgba(215,255,98,.5);border-radius:50%;
+  animation:spin 9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+nav{display:flex;gap:3px}
+nav a{
+  padding:8px 10px;
+  border-radius:9px;
+  color:var(--muted);
+  font-size:12px;
+  transition:.24s;
+}
+nav a:hover{color:#eaffdf;background:rgba(126,255,99,.06);box-shadow:0 0 22px rgba(126,255,99,.06)}
+
+.status{
+  display:flex;align-items:center;gap:8px;
+  color:var(--muted);
+  font:10px "Courier New",monospace;
+  letter-spacing:1px;
+}
+.live{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 13px var(--green);
+  animation:pulse 1.3s infinite;
+}
+@keyframes pulse{50%{opacity:.28;transform:scale(.74)}}
+
+main{max-width:1240px;margin:auto;padding:0 24px}
+
+.hero{
+  min-height:100vh;
+  padding:135px 0 80px;
+  display:grid;
+  grid-template-columns:1.04fr .96fr;
+  gap:48px;
+  align-items:center;
+  position:relative;
+}
+.eyebrow{
+  color:var(--green);
+  font:11px "Courier New",monospace;
+  letter-spacing:3px;
+  margin-bottom:18px;
+}
+.eyebrow::before{
+  content:"";
+  display:inline-block;
+  width:30px;height:1px;
+  background:var(--green);
+  margin:0 10px 4px 0;
+  box-shadow:0 0 10px var(--green);
+}
+
+.logo-text{
+  font-size:clamp(58px,9vw,130px);
+  line-height:.79;
+  letter-spacing:-7px;
+  font-weight:1000;
+  text-transform:uppercase;
+  color:#caff43;
+  text-shadow:
+    2px 2px 0 #56c64c,
+    5px 5px 0 rgba(32,94,35,.7),
+    0 0 28px rgba(122,255,79,.14);
+  transform:skew(-4deg);
+  filter:saturate(1.15);
+  animation:logoJitter 8s infinite;
+}
+.logo-text span{
+  display:block;
+  color:#7dff70;
+  font-size:.61em;
+  letter-spacing:-4px;
+  margin-top:5px;
+  text-shadow:
+    2px 2px 0 #348a4e,
+    0 0 22px rgba(81,255,123,.12);
+}
+@keyframes logoJitter{
+  0%,94%,100%{transform:skew(-4deg) translateX(0)}
+  95%{transform:skew(-4deg) translateX(1px)}
+  96%{transform:skew(-4deg) translateX(-2px)}
+  97%{transform:skew(-4deg) translateX(0)}
+}
+
+.hero-desc{
+  max-width:700px;
+  margin-top:24px;
+  color:var(--soft);
+  font-size:17px;
+  line-height:1.72;
+}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{
+  padding:7px 10px;
+  border:1px solid rgba(126,255,99,.16);
+  border-radius:999px;
+  color:#c9dcc9;
+  background:rgba(126,255,99,.025);
+  font:10px "Courier New",monospace;
+  letter-spacing:1px;
+}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}
+.btn{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px 16px;
+  gap:8px;
+  border-radius:11px;
+  border:1px solid rgba(126,255,99,.22);
+  color:#eefde9;
+  background:linear-gradient(180deg,rgba(126,255,99,.10),rgba(126,255,99,.035));
+  font:700 11px "Courier New",monospace;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  overflow:hidden;
+  transition:.24s;
+}
+.btn::before{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.12),transparent);
+  transform:translateX(-125%);
+  transition:.5s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(65,255,91,.08),inset 0 0 18px rgba(126,255,99,.05)}
+.btn:hover::before{transform:translateX(125%)}
+.btn.primary{background:linear-gradient(90deg,rgba(92,255,89,.18),rgba(83,185,255,.13));border-color:rgba(126,255,99,.45)}
+.btn.blue{border-color:rgba(83,185,255,.34);background:rgba(83,185,255,.07)}
+
+.portal-stage{
+  min-height:570px;
+  position:relative;
+  display:grid;
+  place-items:center;
+}
+.portal-aura{
+  position:absolute;
+  width:min(530px,90vw);
+  aspect-ratio:1;
+  border-radius:50%;
+  background:
+    radial-gradient(circle,rgba(63,255,150,.17) 0 27%,transparent 28%),
+    radial-gradient(circle,transparent 39%,rgba(58,255,149,.18) 40% 41%,transparent 42%),
+    radial-gradient(circle,transparent 54%,rgba(83,185,255,.13) 55% 55.5%,transparent 56%),
+    radial-gradient(circle,transparent 66%,rgba(162,115,255,.13) 67% 67.5%,transparent 68%);
+  filter:blur(.15px);
+  box-shadow:0 0 110px rgba(57,255,152,.10);
+  animation:portalBreath 4.8s ease-in-out infinite;
+}
+.portal-aura::before,.portal-aura::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  inset:8%;
+  border:1px dashed rgba(126,255,99,.30);
+  animation:spin 22s linear infinite;
+}
+.portal-aura::after{
+  inset:20%;
+  border-color:rgba(83,185,255,.25);
+  animation-duration:14s;
+  animation-direction:reverse;
+}
+@keyframes portalBreath{50%{transform:scale(1.045);opacity:.84}}
+
+.portal-core{
+  position:relative;
+  width:min(310px,65vw);
+  aspect-ratio:1;
+  border-radius:50%;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 48%,rgba(204,255,98,.35),rgba(47,255,146,.16) 20%,rgba(4,22,12,.87) 47%,#020403 71%);
+  border:2px solid rgba(120,255,150,.23);
+  box-shadow:
+    inset 0 0 65px rgba(57,255,152,.11),
+    0 0 45px rgba(57,255,152,.13),
+    0 0 115px rgba(83,185,255,.08);
+  transform:perspective(1000px) rotateX(7deg);
+}
+.portal-core::before{
+  content:"";
+  position:absolute;
+  inset:-6%;
+  background:
+    conic-gradient(from 0deg,
+      transparent 0 8%,rgba(215,255,98,.55) 10%,transparent 13% 24%,
+      rgba(83,185,255,.35) 28%,transparent 32% 46%,
+      rgba(255,98,219,.25) 50%,transparent 55% 74%,
+      rgba(82,255,122,.5) 79%,transparent 83%);
+  filter:blur(3px);
+  animation:spin 7.5s linear infinite;
+  opacity:.78;
+}
+.portal-core::after{
+  content:"";
+  position:absolute;inset:24%;
+  border-radius:50%;
+  border:1px solid rgba(210,255,160,.35);
+  box-shadow:0 0 45px rgba(76,255,130,.12) inset;
+  animation:corePulse 2.4s ease-in-out infinite;
+}
+@keyframes corePulse{50%{transform:scale(1.08);opacity:.45}}
+
+.portal-grid{
+  position:absolute;
+  inset:16%;
+  border-radius:50%;
+  border:1px solid rgba(126,255,99,.11);
+  background:
+    linear-gradient(rgba(126,255,99,.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(126,255,99,.07) 1px,transparent 1px);
+  background-size:22px 22px;
+  transform:rotate(12deg);
+  mix-blend-mode:screen;
+}
+.portal-cross{
+  position:absolute;
+  width:42%;height:1px;left:29%;top:50%;
+  background:linear-gradient(90deg,transparent,rgba(215,255,98,.75),transparent);
+  box-shadow:0 0 12px rgba(215,255,98,.55);
+}
+.portal-cross.v{transform:rotate(90deg)}
+
+.poster-card{
+  position:absolute;
+  bottom:7%;
+  right:-4%;
+  width:190px;
+  aspect-ratio:3/4;
+  border:1px solid rgba(126,255,99,.20);
+  border-radius:14px;
+  overflow:hidden;
+  background:linear-gradient(145deg,#091a10,#020403);
+  box-shadow:0 20px 50px rgba(0,0,0,.36);
+  transform:rotate(7deg);
+  transition:.35s;
+}
+.poster-card:hover{transform:rotate(3deg) translateY(-5px)}
+.poster-card img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.1)}
+.poster-card .label{
+  position:absolute;left:8px;right:8px;bottom:8px;
+  padding:8px;
+  background:rgba(1,5,2,.67);
+  border:1px solid rgba(126,255,99,.14);
+  border-radius:8px;
+  color:#d3e9d1;
+  font:9px "Courier New",monospace;
+  line-height:1.4;
+}
+.dimension{
+  position:absolute;
+  left:1%;
+  bottom:5%;
+  padding:10px 12px;
+  border:1px solid rgba(83,185,255,.17);
+  border-radius:10px;
+  background:rgba(2,8,11,.66);
+  color:#a7cbe4;
+  font:10px "Courier New",monospace;
+  line-height:1.5;
+}
+
+section{padding:100px 0;position:relative}
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:24px;
+  margin-bottom:26px;
+}
+.kicker{
+  color:var(--green);
+  font:10px "Courier New",monospace;
+  letter-spacing:2.4px;
+  margin-bottom:8px;
+}
+h2{
+  font-size:clamp(31px,4vw,58px);
+  line-height:1;
+  letter-spacing:-2px;
+}
+.section-note{
+  max-width:500px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.62;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:9px;
+}
+.stat{
+  min-height:118px;
+  padding:16px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:linear-gradient(180deg,rgba(9,19,12,.80),rgba(4,9,6,.87));
+  transition:.26s;
+}
+.stat:hover{transform:translateY(-4px);border-color:rgba(126,255,99,.34);box-shadow:0 14px 38px rgba(0,0,0,.25)}
+.stat::after{
+  content:"";
+  position:absolute;
+  width:85px;height:85px;
+  right:-35px;top:-35px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(126,255,99,.13),transparent 65%);
+}
+.stat small{font:9px "Courier New",monospace;letter-spacing:1.4px;color:var(--muted)}
+.stat strong{display:block;margin-top:10px;font-size:20px}
+.stat span{display:block;margin-top:5px;font-size:11px;color:var(--muted);line-height:1.45}
+
+.multi{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.panel{
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:linear-gradient(180deg,rgba(8,17,12,.80),rgba(3,8,5,.91));
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.panel-head{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:12px 14px;
+  border-bottom:1px solid rgba(126,255,99,.09);
+  color:var(--muted);
+  font:9px "Courier New",monospace;
+  letter-spacing:1.5px;
+}
+.panel-head span:last-child{color:var(--green)}
+.panel-body{padding:20px}
+.prose{color:#bdd0c2;line-height:1.8;font-size:13px}
+.prose + .prose{margin-top:14px}
+
+.portal-console{
+  display:grid;
+  gap:10px;
+}
+.console-row{
+  display:grid;
+  grid-template-columns:96px 1fr;
+  gap:10px;
+  align-items:center;
+  padding:10px 11px;
+  border:1px solid rgba(126,255,99,.09);
+  border-radius:10px;
+  background:rgba(126,255,99,.025);
+}
+.console-key{color:var(--muted);font:9px "Courier New",monospace;letter-spacing:1px}
+.console-value{color:#d9f4d4;font:11px "Courier New",monospace}
+.console-value .bar{
+  height:7px;border-radius:99px;background:#0c1a0f;overflow:hidden;margin-top:6px
+}
+.console-value .bar i{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,#58ef58,#d7ff62);box-shadow:0 0 12px rgba(126,255,99,.35)}
+.portal-buttons{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+.dim-btn{
+  border:1px solid rgba(83,185,255,.16);
+  color:#a8cfea;
+  background:rgba(83,185,255,.04);
+  padding:7px 9px;border-radius:8px;
+  cursor:pointer;font:9px "Courier New",monospace;
+  transition:.2s
+}
+.dim-btn:hover,.dim-btn.active{border-color:rgba(83,185,255,.42);color:white;box-shadow:0 0 16px rgba(83,185,255,.08)}
+
+.character-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:9px;
+}
+.character{
+  position:relative;
+  min-height:250px;
+  padding:15px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:
+    radial-gradient(circle at 78% 16%,rgba(126,255,99,.08),transparent 32%),
+    linear-gradient(180deg,rgba(10,19,13,.88),rgba(3,8,5,.94));
+  overflow:hidden;
+  transition:.28s;
+}
+.character:hover{transform:translateY(-6px);border-color:rgba(126,255,99,.36);box-shadow:0 18px 38px rgba(0,0,0,.24)}
+.character .id{position:absolute;top:10px;right:10px;color:rgba(190,255,180,.25);font:8px "Courier New",monospace}
+.avatar{
+  width:58px;height:58px;border-radius:16px;
+  display:grid;place-items:center;
+  border:1px solid rgba(126,255,99,.24);
+  background:
+    radial-gradient(circle at 30% 30%,rgba(215,255,98,.27),transparent 42%),
+    linear-gradient(145deg,rgba(83,185,255,.11),rgba(162,115,255,.12));
+  color:#e7ffdc;
+  font:800 17px "Courier New",monospace;
+  box-shadow:inset 0 0 25px rgba(126,255,99,.05);
+}
+.character h3{margin-top:17px;font-size:15px}
+.character .role{margin-top:5px;color:var(--green);font:8px "Courier New",monospace;letter-spacing:1px}
+.character p{margin-top:11px;color:var(--muted);font-size:11px;line-height:1.55}
+
+.season-browser{
+  display:grid;
+  grid-template-columns:210px 1fr;
+  gap:0;
+  min-height:540px;
+  overflow:hidden;
+}
+.seasons{
+  border-right:1px solid rgba(126,255,99,.10);
+  background:rgba(2,7,4,.48);
+  padding:10px;
+}
+.season-btn{
+  width:100%;
+  text-align:left;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--muted);
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:5px;
+  cursor:pointer;
+  font:700 10px "Courier New",monospace;
+  letter-spacing:1px;
+  transition:.2s;
+}
+.season-btn:hover{background:rgba(126,255,99,.035);color:#eaf9e6}
+.season-btn.active{border-color:rgba(126,255,99,.18);background:rgba(126,255,99,.06);color:#eaffdc}
+.episodes{
+  padding:18px;
+}
+.season-meta{
+  display:flex;justify-content:space-between;align-items:start;gap:20px;margin-bottom:15px
+}
+.season-meta h3{font-size:25px}
+.season-meta p{color:var(--muted);font-size:11px;line-height:1.55;max-width:580px;margin-top:5px}
+.season-chip{
+  flex:none;padding:7px 9px;border:1px solid rgba(126,255,99,.13);border-radius:8px;color:var(--green);font:9px "Courier New",monospace
+}
+.episode-list{display:grid;gap:7px}
+.ep{
+  display:grid;
+  grid-template-columns:64px 1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:12px 13px;
+  border:1px solid rgba(126,255,99,.08);
+  border-radius:10px;
+  background:rgba(126,255,99,.018);
+  transition:.2s;
+}
+.ep:hover{border-color:rgba(126,255,99,.21);background:rgba(126,255,99,.035);transform:translateX(2px)}
+.ep-num{color:var(--green);font:9px "Courier New",monospace}
+.ep-title{font-size:12px;color:#dfedde}
+.ep-desc{margin-top:4px;color:var(--muted);font-size:10px;line-height:1.42}
+.ep-link{font:9px "Courier New",monospace;color:#9cc7a6}
+
+.trailer{
+  position:relative;
+  min-height:430px;
+  border-radius:17px;
+  border:1px solid rgba(126,255,99,.18);
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 48%,rgba(57,255,152,.12),transparent 22%),
+    radial-gradient(circle at 72% 25%,rgba(83,185,255,.10),transparent 28%),
+    linear-gradient(145deg,#041007,#07140b 48%,#0f0713);
+  display:grid;place-items:center;
+}
+.trailer::before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,transparent 0 48%,rgba(126,255,99,.09) 49%,transparent 50%),
+    linear-gradient(transparent 0 62%,rgba(255,98,219,.06) 64%,transparent 68%);
+}
+.trailer-inner{
+  position:relative;z-index:2;
+  text-align:center;
+  width:min(760px,92%);
+  padding:30px;
+}
+.trailer-code{color:var(--green);font:9px "Courier New",monospace;letter-spacing:2px;margin-bottom:11px}
+.trailer h2{font-size:clamp(34px,5vw,65px)}
+.trailer p{color:var(--muted);line-height:1.7;font-size:13px;max-width:620px;margin:15px auto 22px}
+.ring{
+  position:absolute;
+  width:380px;aspect-ratio:1;border-radius:50%;
+  border:1px dashed rgba(126,255,99,.13);
+  animation:spin 20s linear infinite;
+}
+.ring:nth-child(2){width:260px;animation-duration:13s;animation-direction:reverse;border-color:rgba(83,185,255,.13)}
+.ring:nth-child(3){width:145px;animation-duration:8s;border-color:rgba(255,98,219,.13)}
+
+.footer{
+  padding:44px 0 60px;
+  border-top:1px solid rgba(126,255,99,.08);
+  display:flex;justify-content:space-between;gap:20px;
+  color:var(--muted);
+  font:9px "Courier New",monospace;
+  letter-spacing:1.2px;
+}
+.footer strong{color:#dfffd7}
+
+.modal-bg{
+  position:fixed;inset:0;z-index:60;
+  display:grid;place-items:center;padding:16px;
+  background:rgba(0,3,1,.78);
+  backdrop-filter:blur(14px);
+  opacity:0;pointer-events:none;transition:.25s;
+}
+.modal-bg.open{opacity:1;pointer-events:auto}
+.modal{
+  width:min(820px,100%);
+  max-height:86vh;overflow:auto;
+  border:1px solid rgba(126,255,99,.22);
+  border-radius:16px;
+  background:linear-gradient(180deg,#07120a,#030805);
+  box-shadow:0 30px 100px rgba(0,0,0,.58),0 0 60px rgba(126,255,99,.08);
+  transform:translateY(20px) scale(.985);
+  transition:.25s;
+}
+.modal-bg.open .modal{transform:none}
+.modal-head{
+  padding:13px 15px;border-bottom:1px solid rgba(126,255,99,.08);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.modal-head span{color:var(--green);font:9px "Courier New",monospace;letter-spacing:1.4px}
+.close{
+  width:33px;height:33px;border-radius:9px;
+  background:transparent;border:1px solid rgba(126,255,99,.12);color:#c7d8c6;cursor:pointer
+}
+.modal-body{padding:22px}
+.modal-body h3{font-size:25px}
+.modal-body p{margin-top:9px;color:var(--muted);font-size:13px;line-height:1.75}
+.modal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:18px}
+.modal-item{padding:13px;border:1px solid rgba(126,255,99,.08);border-radius:10px;background:rgba(126,255,99,.023)}
+.modal-item b{display:block;color:#daf6d4;font-size:11px}
+.modal-item span{display:block;color:var(--muted);font-size:10px;line-height:1.48;margin-top:5px}
+
+.reveal{opacity:0;transform:translateY(23px);transition:opacity .75s,transform .75s}
+.reveal.visible{opacity:1;transform:none}
+
+.toast{
+  position:fixed;left:50%;bottom:22px;z-index:70;
+  transform:translate(-50%,20px);
+  opacity:0;pointer-events:none;
+  padding:10px 14px;border:1px solid rgba(126,255,99,.18);border-radius:10px;
+  background:rgba(2,8,4,.88);backdrop-filter:blur(9px);
+  color:#dfffd8;font:9px "Courier New",monospace;letter-spacing:1px;
+  transition:.25s;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:1050px){
+  .hero{grid-template-columns:1fr}
+  .portal-stage{min-height:560px}
+  .character-grid{grid-template-columns:repeat(3,1fr)}
+  .stat-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:760px){
+  nav{display:none}
+  .status{display:none}
+  main{padding:0 14px}
+  .hero{padding-top:120px;gap:25px}
+  .portal-stage{min-height:500px}
+  .poster-card{right:0;bottom:2%;width:145px}
+  .dimension{left:2%;bottom:2%;font-size:8px}
+  section{padding:74px 0}
+  .section-head{display:block}
+  .section-note{margin-top:11px}
+  .multi{grid-template-columns:1fr}
+  .character-grid{grid-template-columns:1fr 1fr}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .season-browser{grid-template-columns:1fr}
+  .seasons{border-right:0;border-bottom:1px solid rgba(126,255,99,.10);display:flex;gap:5px;overflow:auto}
+  .season-btn{min-width:78px;margin:0}
+  .episodes{padding:14px}
+  .ep{grid-template-columns:48px 1fr}
+  .ep-link{display:none}
+  .modal-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .character-grid,.stat-grid{grid-template-columns:1fr}
+  .logo-text{letter-spacing:-4px}
+}
+</style>
+</head>
+
+<body>
+<div id="cosmos"></div>
+
+<header class="topbar">
+  <a class="brand" href="#top" aria-label="XayDEv">
+    <span class="brand-icon" aria-hidden="true"></span>
+    <span>XayDEv</span>
+  </a>
+
+  <nav>
+    <a href="#universo">Universo</a>
+    <a href="#personagens">Personagens</a>
+    <a href="#episodios">Episódios</a>
+    <a href="#trailer">Trailer</a>
+  </nav>
+
+  <div class="status">
+    <span class="live"></span>
+    MULTIVERSE CONNECTION: ONLINE
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">MULTIVERSE DATABASE // XayDEv</div>
+
+      <div class="logo-text">
+        RICK
+        <span>AND MORTY</span>
+      </div>
+
+      <p class="hero-desc">
+        Um arquivo interativo dedicado ao caos interdimensional de Rick Sanchez e Morty Smith:
+        portais, dimensões alternativas, aventuras absurdas e uma família que raramente consegue
+        passar uma semana sem colocar o universo em risco.
+      </p>
+
+      <div class="hero-tags">
+        <span class="tag">SCI-FI</span>
+        <span class="tag">COMÉDIA</span>
+        <span class="tag">ANIMAÇÃO</span>
+        <span class="tag">MULTIVERSO</span>
+        <span class="tag">ADULT SWIM</span>
+      </div>
+
+      <div class="actions">
+        <a class="btn primary" href="#universo">Entrar no multiverso</a>
+        <a class="btn blue" href="#episodios">Explorar episódios</a>
+        <button class="btn" id="openModal">Abrir arquivo</button>
+      </div>
+    </div>
+
+    <div class="portal-stage">
+      <div class="portal-aura" aria-hidden="true"></div>
+
+      <div class="portal-core" aria-hidden="true">
+        <div class="portal-grid"></div>
+        <div class="portal-cross"></div>
+        <div class="portal-cross v"></div>
+      </div>
+
+      <div class="dimension" id="dimensionReadout">
+        DIMENSION LOCK<br>
+        <strong>C-137</strong><br>
+        PORTAL STABILITY: 87.4%
+      </div>
+
+      <div class="poster-card">
+        <img
+          src="https://resizing.flixster.com/gsGd4m0Fm2campmJ9ZyaYXWPS1A%3D/ems.cHJkLWVtcy1hc3NldHMvdHZzZWFzb24vUlRUVjEzMDE3Ni53ZWJw"
+          alt="Rick and Morty — poster"
+          onerror="this.style.display='none'"
+        >
+        <div class="label">ARCHIVE VISUAL // RICK + MORTY // ADULT SWIM</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" id="universo">
+    <div class="section-head">
+      <div>
+        <div class="kicker">01 // MULTIVERSE PROFILE</div>
+        <h2>O universo em números</h2>
+      </div>
+      <p class="section-note">
+        O site acompanha a série até à temporada 9, atualmente apresentada pelo Adult Swim como a nova temporada em exibição.
+      </p>
+    </div>
+
+    <div class="stat-grid">
+      <article class="stat">
+        <small>ESTREIA</small>
+        <strong>2013</strong>
+        <span>Primeiro episódio exibido no Adult Swim.</span>
+      </article>
+      <article class="stat">
+        <small>TEMPORADA ATUAL</small>
+        <strong>9</strong>
+        <span>A página oficial do Adult Swim já apresenta episódios da S9.</span>
+      </article>
+      <article class="stat">
+        <small>FORMATO</small>
+        <strong>11 min</strong>
+        <span>Comédia de animação em episódios curtos.</span>
+      </article>
+      <article class="stat">
+        <small>UNIVERSO</small>
+        <strong>Multiverso</strong>
+        <span>Dimensões, versões alternativas e realidades paralelas.</span>
+      </article>
+      <article class="stat">
+        <small>PRODUÇÃO</small>
+        <strong>Adult Swim</strong>
+        <span>Série animada transmitida pelo bloco da Warner Bros. Discovery.</span>
+      </article>
+    </div>
+
+    <div class="multi" style="margin-top:14px">
+      <div class="panel">
+        <div class="panel-head">
+          <span>ORIGIN FILE // SMITH FAMILY</span>
+          <span>CONNECTED</span>
+        </div>
+        <div class="panel-body">
+          <p class="prose">
+            A série acompanha o cientista Rick Sanchez, que regressa à vida da filha Beth e passa a levar
+            o neto Morty para aventuras que rapidamente deixam de ser simples experiências científicas.
+            A família — incluindo Summer e Jerry — é constantemente arrastada para situações que atravessam
+            dimensões, planetas e versões alternativas de realidade.
+          </p>
+          <p class="prose">
+            O resultado mistura ficção científica, humor absurdo, paródia e histórias familiares,
+            usando a ideia do multiverso para transformar quase qualquer cenário numa possibilidade narrativa.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span>PORTAL CONSOLE // LIVE</span>
+          <span>READY</span>
+        </div>
+        <div class="panel-body">
+          <div class="portal-console">
+            <div class="console-row">
+              <div class="console-key">ENERGY</div>
+              <div class="console-value">PORTAL GREEN<div class="bar"><i style="--w:91%"></i></div></div>
+            </div>
+            <div class="console-row">
+              <div class="console-key">STABILITY</div>
+              <div class="console-value">DIMENSIONAL<div class="bar"><i style="--w:74%"></i></div></div>
+            </div>
+            <div class="console-row">
+              <div class="console-key">CHAOS</div>
+              <div class="console-value">EXTREME<div class="bar"><i style="--w:98%"></i></div></div>
+            </div>
+
+            <div class="portal-buttons">
+              <button class="dim-btn active" data-dim="C-137">C-137</button>
+              <button class="dim-btn" data-dim="Cronenberg">CRONENBERG</button>
+              <button class="dim-btn" data-dim="Citadel">CITADEL</button>
+              <button class="dim-btn" data-dim="Prime">RICK PRIME</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" id="personagens">
+    <div class="section-head">
+      <div>
+        <div class="kicker">02 // CREW INDEX</div>
+        <h2>Personagens</h2>
+      </div>
+      <p class="section-note">
+        Perfis principais do universo de Rick and Morty, apresentados como registos de uma base de dados multiversal.
+      </p>
+    </div>
+
+    <div class="character-grid">
+      <article class="character">
+        <span class="id">RICK-001</span>
+        <div class="avatar">RS</div>
+        <h3>Rick Sanchez</h3>
+        <div class="role">SCIENTIST / DIMENSIONAL TRAVELER</div>
+        <p>Génio científico, inventor e catalisador de boa parte das aventuras que atravessam o multiverso.</p>
+      </article>
+
+      <article class="character">
+        <span class="id">MORTY-001</span>
+        <div class="avatar">MS</div>
+        <h3>Morty Smith</h3>
+        <div class="role">GRANDSON / FIELD OPERATIVE</div>
+        <p>Neto de Rick e parceiro frequente nas missões. A sua perspetiva humana contrasta com o caos científico do avô.</p>
+      </article>
+
+      <article class="character">
+        <span class="id">SUMMER-001</span>
+        <div class="avatar">SS</div>
+        <h3>Summer Smith</h3>
+        <div class="role">FAMILY / ADVENTURE UNIT</div>
+        <p>Filha de Beth e irmã de Morty, cada vez mais presente nas aventuras interdimensionais da família.</p>
+      </article>
+
+      <article class="character">
+        <span class="id">BETH-001</span>
+        <div class="avatar">BS</div>
+        <h3>Beth Smith</h3>
+        <div class="role">FAMILY / HORSE SURGEON</div>
+        <p>Filha de Rick e mãe de Morty e Summer. Vive entre a rotina familiar e a influência permanente do pai.</p>
+      </article>
+
+      <article class="character">
+        <span class="id">JERRY-001</span>
+        <div class="avatar">JS</div>
+        <h3>Jerry Smith</h3>
+        <div class="role">FAMILY / HUMAN VARIABLE</div>
+        <p>Marido de Beth e pai de Morty e Summer. A sua relação com Rick produz uma fonte constante de conflito familiar.</p>
+      </article>
+
+      <article class="character">
+        <span class="id">EM-001</span>
+        <div class="avatar">EM</div>
+        <h3>Evil Morty</h3>
+        <div class="role">MULTIVERSE / UNKNOWN OBJECTIVE</div>
+        <p>Uma versão de Morty ligada a uma das linhas narrativas mais misteriosas e recorrentes do multiverso.</p>
+      </article>
+
+      <article class="character">
+        <span class="id">BP-001</span>
+        <div class="avatar">BP</div>
+        <h3>Birdperson</h3>
+        <div class="role">ALIEN / RICK CONNECTION</div>
+        <p>Velho aliado de Rick e figura central para compreender partes do passado do cientista.</p>
+      </article>
+
+      <article class="character">
+        <span class="id">MC-001</span>
+        <div class="avatar">ME</div>
+        <h3>Mr. Meeseeks</h3>
+        <div class="role">ASSISTANCE ENTITY</div>
+        <p>Entidades criadas para cumprir tarefas, cuja existência rápida tornou-se uma das ideias mais reconhecíveis da série.</p>
+      </article>
+
+      <article class="character">
+        <span class="id">PC-001</span>
+        <div class="avatar">PR</div>
+        <h3>Pickle Rick</h3>
+        <div class="role">UNUSUAL FORM / COMBAT STATE</div>
+        <p>Uma das transformações mais conhecidas de Rick, usada numa aventura que virou um marco cultural da série.</p>
+      </article>
+
+      <article class="character">
+        <span class="id">PRES-001</span>
+        <div class="avatar">PC</div>
+        <h3>President Curtis</h3>
+        <div class="role">EARTH / GOVERNMENT</div>
+        <p>Presidente dos Estados Unidos no universo da série e presença recorrente em conflitos envolvendo Rick.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="reveal" id="episodios">
+    <div class="section-head">
+      <div>
+        <div class="kicker">03 // EPISODE MATRIX</div>
+        <h2>Arquivo de temporadas</h2>
+      </div>
+      <p class="section-note">
+        A temporada 9 está aberta com títulos apresentados pelo catálogo oficial do Adult Swim.
+      </p>
+    </div>
+
+    <div class="panel season-browser">
+      <div class="seasons">
+        <button class="season-btn active" data-season="9">SEASON 09</button>
+        <button class="season-btn" data-season="8">SEASON 08</button>
+        <button class="season-btn" data-season="7">SEASON 07</button>
+        <button class="season-btn" data-season="6">SEASON 06</button>
+        <button class="season-btn" data-season="5">SEASON 05</button>
+        <button class="season-btn" data-season="4">SEASON 04</button>
+        <button class="season-btn" data-season="3">SEASON 03</button>
+        <button class="season-btn" data-season="2">SEASON 02</button>
+        <button class="season-btn" data-season="1">SEASON 01</button>
+      </div>
+
+      <div class="episodes">
+        <div class="season-meta">
+          <div>
+            <h3 id="seasonTitle">Season 9</h3>
+            <p id="seasonDescription">
+              Episódios atualmente listados pelo Adult Swim. A temporada 9 estreou em 2026.
+            </p>
+          </div>
+          <div class="season-chip" id="seasonChip">CURRENT</div>
+        </div>
+
+        <div class="episode-list" id="episodeList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="section-head">
+      <div>
+        <div class="kicker">04 // MULTIVERSE LOG</div>
+        <h2>Momentos e conceitos</h2>
+      </div>
+      <p class="section-note">
+        Um painel visual para os elementos que definem a identidade da série.
+      </p>
+    </div>
+
+    <div class="multi">
+      <div class="panel">
+        <div class="panel-head"><span>CONCEPTS // CORE</span><span>INDEXED</span></div>
+        <div class="panel-body">
+          <div class="portal-console">
+            <div class="console-row">
+              <div class="console-key">PORTALS</div>
+              <div class="console-value">ACROSS DIMENSIONS<div class="bar"><i style="--w:100%"></i></div></div>
+            </div>
+            <div class="console-row">
+              <div class="console-key">CLONES</div>
+              <div class="console-value">VARIABLE<div class="bar"><i style="--w:77%"></i></div></div>
+            </div>
+            <div class="console-row">
+              <div class="console-key">ALIENS</div>
+              <div class="console-value">UNRESOLVED<div class="bar"><i style="--w:89%"></i></div></div>
+            </div>
+            <div class="console-row">
+              <div class="console-key">FAMILY</div>
+              <div class="console-value">STILL TOGETHER<div class="bar"><i style="--w:62%"></i></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><span>XayDEv // ARCHIVE NOTE</span><span>READY</span></div>
+        <div class="panel-body">
+          <p class="prose">
+            A graça do conceito está em nunca limitar a aventura a uma única realidade.
+            Cada portal pode abrir espaço para uma nova versão de personagens, novas regras físicas,
+            novas sociedades e consequências completamente diferentes.
+          </p>
+          <p class="prose">
+            Esta página usa essa ideia como linguagem visual: o conteúdo é apresentado como um terminal
+            que pode saltar entre dimensões, temporadas e registos.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" id="trailer">
+    <div class="section-head">
+      <div>
+        <div class="kicker">05 // VIDEO CHANNEL</div>
+        <h2>Trailer e canais oficiais</h2>
+      </div>
+      <p class="section-note">
+        A página oficial do Adult Swim disponibiliza trailers, episódios e extras de Rick and Morty.
+      </p>
+    </div>
+
+    <div class="trailer">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+
+      <div class="trailer-inner">
+        <div class="trailer-code">PORTAL VIDEO FEED // READY</div>
+        <h2>ENTER THE PORTAL</h2>
+        <p>
+          Acede aos trailers e episódios através dos canais oficiais do Adult Swim.
+          O link é aberto externamente para manter o site leve e evitar problemas de reprodução
+          quando o HTML estiver a ser aberto diretamente no computador.
+        </p>
+        <div class="actions" style="justify-content:center">
+          <a class="btn primary" target="_blank" rel="noopener"
+             href="https://www.adultswim.com/rick-and-morty">Adult Swim</a>
+          <a class="btn blue" target="_blank" rel="noopener"
+             href="https://www.adultswim.com/videos/rick-and-morty">Episódios</a>
+          <a class="btn" target="_blank" rel="noopener"
+             href="https://www.youtube.com/results?search_query=Rick+and+Morty+official+trailer+Adult+Swim">YouTube</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <strong>XayDEv // RICK AND MORTY MULTIVERSE ARCHIVE</strong>
+    <span>PORTAL STATUS: ONLINE // DIMENSION: <span id="footerDim">C-137</span></span>
+  </footer>
+</main>
+
+<div class="modal-bg" id="modalBg" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <span>XayDEv // CLASSIFIED MULTIVERSE FILE</span>
+      <button class="close" id="closeModal" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-body">
+      <h3 id="modalTitle">Rick and Morty</h3>
+      <p>
+        O universo acompanha Rick Sanchez, um cientista genial e caótico, e o seu neto Morty,
+        enquanto os dois atravessam dimensões e se envolvem em problemas cósmicos, científicos e familiares.
+        A família Smith ocupa um lugar central na série, enquanto a ideia do multiverso permite explorar
+        inúmeras variações de personagens e realidades.
+      </p>
+
+      <div class="modal-grid">
+        <div class="modal-item">
+          <b>RICK</b>
+          <span>Inventor, cientista e figura central do sistema de viagens interdimensionais.</span>
+        </div>
+        <div class="modal-item">
+          <b>MORTY</b>
+          <span>Neto de Rick e uma das principais perspetivas humanas dentro das aventuras.</span>
+        </div>
+        <div class="modal-item">
+          <b>FAMÍLIA SMITH</b>
+          <span>Beth, Jerry e Summer tornam-se frequentemente parte do caos multiversal.</span>
+        </div>
+        <div class="modal-item">
+          <b>MULTIVERSO</b>
+          <span>Dimensões alternativas permitem histórias e versões diferentes dos mesmos conceitos.</span>
+        </div>
+        <div class="modal-item">
+          <b>CITADEL</b>
+          <span>Um dos conceitos mais associados à mitologia multiversal da série.</span>
+        </div>
+        <div class="modal-item">
+          <b>EVIL MORTY</b>
+          <span>Uma figura misteriosa ligada a uma das linhas narrativas de maior continuidade da série.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">PORTAL LOCKED</div>
+
+<script>
+const cosmos=document.getElementById("cosmos");
+for(let i=0;i<110;i++){
+  const d=document.createElement("span");
+  d.className="dot";
+  const s=0.8+Math.random()*2.1;
+  d.style.width=s+"px";
+  d.style.height=s+"px";
+  d.style.left=(Math.random()*100)+"%";
+  d.style.animationDuration=(7+Math.random()*18)+"s";
+  d.style.animationDelay=(-Math.random()*22)+"s";
+  d.style.opacity=(.18+Math.random()*.72).toFixed(2);
+  cosmos.appendChild(d);
+}
+
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting)e.target.classList.add("visible");
+  });
+},{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+const modalBg=document.getElementById("modalBg");
+document.getElementById("openModal").addEventListener("click",()=>{
+  modalBg.classList.add("open");
+  modalBg.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+});
+function closeModal(){
+  modalBg.classList.remove("open");
+  modalBg.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
+document.getElementById("closeModal").addEventListener("click",closeModal);
+modalBg.addEventListener("click",e=>{if(e.target===modalBg)closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+const dimensionReadout=document.getElementById("dimensionReadout");
+const footerDim=document.getElementById("footerDim");
+const toast=document.getElementById("toast");
+document.querySelectorAll(".dim-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".dim-btn").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    const dim=btn.dataset.dim;
+    dimensionReadout.innerHTML=`DIMENSION LOCK<br><strong>${dim}</strong><br>PORTAL STABILITY: ${(70+Math.random()*28).toFixed(1)}%`;
+    footerDim.textContent=dim;
+    toast.textContent=`PORTAL LOCKED // ${dim}`;
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"),1500);
+  });
+});
+
+const seasons={
+  9:{
+    title:"Season 9",
+    chip:"CURRENT",
+    desc:"A temporada apresentada pelo Adult Swim em 2026, com episódios atualmente listados no catálogo oficial.",
+    eps:[
+      ["EP 01","There's Something About Morty","Rick's been lonely, broh. Morty's worried bout side pieces."],
+      ["EP 02","Ricks Days, Seven Nights","You try being Rick all the time, broh."],
+      ["EP 03","Rick Fu Hustle","You haven't lived till you've chested up at Trader Joe's, broh."],
+      ["EP 04","A Ricker Runs Through It","Remembering passwords is hard, broh. Special characters, broh!"],
+      ["EP 05","Jer Bud","Man's best friend, broh."],
+      ["EP 06","Erickerhead","Rick's stomach is mad, broh. It's all-you-can-eat-and-drink here, broh!"],
+      ["EP 07","Mortgully: The Last Rickforest","Rick and Morty gotta evolve, broh."],
+      ["EP 08","Rickuiem Mort a Dream","Hold still, broh. It'll make you nice, broh."],
+      ["EP 09","Salute Your Morts","Morty and Summer go to camp, broh. Beth and Jerry home alone, broh."],
+      ["EP 10","Field of Dreams","Tom Sawyer, broh."]
+    ]
+  },
+  8:{
+    title:"Season 8",
+    chip:"2025",
+    desc:"Temporada lançada em 2025, com Rick, Morty e a família Smith de volta ao caos interdimensional.",
+    eps:[
+      ["S08","CATÁLOGO","Consulta os episódios e extras no arquivo oficial do Adult Swim."],
+      ["","Nomortland","Jerry makes a friend just as jobless as he is."],
+      ["","Morty Daddy","Summer and Rick dine OUT, broh. Fancy restaurant stuff."],
+      ["","CATÁLOGO","Mais episódios disponíveis através do Adult Swim."]
+    ]
+  },
+  7:{
+    title:"Season 7",
+    chip:"2023",
+    desc:"Temporada que trouxe uma nova fase da série e manteve a estrutura de aventuras sci-fi e humor absurdo.",
+    eps:[
+      ["S07","CATÁLOGO","Explore a temporada completa no Adult Swim."],
+      ["","Fear No Mort","The only thing to fear is fear itself."],
+      ["","CATÁLOGO","Episódios e clips disponíveis no arquivo oficial."]
+    ]
+  },
+  6:{
+    title:"Season 6",
+    chip:"2022",
+    desc:"A temporada do período em que o Adult Swim também promoveu a iniciativa Wormageddon.",
+    eps:[
+      ["S06","CATÁLOGO","Explore a temporada completa no Adult Swim."],
+      ["","Wormageddon","A campanha especial do universo de Rick and Morty."],
+      ["","CATÁLOGO","Episódios e extras disponíveis no arquivo oficial."]
+    ]
+  },
+  5:{
+    title:"Season 5",
+    chip:"2021",
+    desc:"A quinta temporada inclui aventuras como A Rickconvenient Mort e Rickdependence Spray.",
+    eps:[
+      ["S05","CATÁLOGO","Explore a temporada completa no Adult Swim."],
+      ["03","A Rickconvenient Mort","Reduce. Reuse. Broh. Might be too late."],
+      ["04","Rickdependence Spray","No shame, broh. We all do it, broh."]
+    ]
+  },
+  4:{
+    title:"Season 4",
+    chip:"2019–2020",
+    desc:"Temporada conhecida por episódios como Promortyus, Rattlestar Ricklactica e The Vat of Acid Episode.",
+    eps:[
+      ["S04","CATÁLOGO","Explore a temporada completa no Adult Swim."],
+      ["05","Rattlestar Ricklactica","Lots of things in space, broh."],
+      ["07","Promortyus","Get off my face, broh."],
+      ["08","The Vat of Acid Episode","The one with the acid vat, broh."]
+    ]
+  },
+  3:{
+    title:"Season 3",
+    chip:"2017",
+    desc:"Uma das primeiras temporadas a aprofundar a mitologia da série em episódios como Tales From The Citadel.",
+    eps:[
+      ["S03","CATÁLOGO","Explore a temporada completa no Adult Swim."],
+      ["07","Tales From The Citadel","It's Ricks and Mortys all the way down."]
+    ]
+  },
+  2:{
+    title:"Season 2",
+    chip:"2015",
+    desc:"Expande o universo da família Smith e das aventuras científicas de Rick e Morty.",
+    eps:[
+      ["S02","CATÁLOGO","Explore a temporada completa no Adult Swim."],
+      ["","ARQUIVO OFICIAL","Episódios disponíveis no catálogo do Adult Swim."]
+    ]
+  },
+  1:{
+    title:"Season 1",
+    chip:"2013",
+    desc:"A temporada que apresentou o público ao laboratório improvisado de Rick, às viagens dimensionais e à família Smith.",
+    eps:[
+      ["S01","CATÁLOGO","Explore a temporada completa no Adult Swim."],
+      ["","PILOT","O episódio de estreia do universo de Rick and Morty."],
+      ["","ARQUIVO OFICIAL","Episódios e clips disponíveis no Adult Swim."]
+    ]
+  }
+};
+
+const episodeList=document.getElementById("episodeList");
+const seasonTitle=document.getElementById("seasonTitle");
+const seasonDescription=document.getElementById("seasonDescription");
+const seasonChip=document.getElementById("seasonChip");
+
+function renderSeason(n){
+  const s=seasons[n];
+  seasonTitle.textContent=s.title;
+  seasonDescription.textContent=s.desc;
+  seasonChip.textContent=s.chip;
+  episodeList.innerHTML="";
+  s.eps.forEach(ep=>{
+    const item=document.createElement("article");
+    item.className="ep";
+    item.innerHTML=`
+      <div class="ep-num">${ep[0]||"—"}</div>
+      <div>
+        <div class="ep-title">${ep[1]}</div>
+        <div class="ep-desc">${ep[2]}</div>
+      </div>
+      <a class="ep-link" href="https://www.adultswim.com/videos/rick-and-morty" target="_blank" rel="noopener">OPEN FILE</a>
+    `;
+    episodeList.appendChild(item);
+  });
+}
+renderSeason("9");
+
+document.querySelectorAll(".season-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".season-btn").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    renderSeason(btn.dataset.season);
+  });
+});
+</script>
+</body>
+</html>
